@@ -1,13 +1,16 @@
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css'; // optional for styling
+import 'tippy.js/animations/scale.css';
 
 document.querySelectorAll('.the-content a').forEach( el => {
 
   const href = el.href
 
-  if ( href.incloud('glossary') == false ) return;
+  if ( href.includes('glossary') == false ) return;
 
   tippy(el, {
+    arrow: true,
+    animation: 'scale',
     content: 'טוען...',
     onCreate(instance) {
       // Setup our own custom state properties
@@ -19,20 +22,26 @@ document.querySelectorAll('.the-content a').forEach( el => {
       if (instance._isFetching || instance._src || instance._error) {
         return;
       }
-      instance._isFetching = true;
 
       const data = new FormData();
       data.append('postUrl', href);
-  
+      data.append('action', 'adiel_tooltip');
+
+      instance._isFetching = true;
+
       fetch(adiel_tooltip.ajaxurl, {
-        body: data,
-        method: 'POST'
+        method: 'POST',
+        credentials: 'same-origin',
+        body: data
       })
         .then( response => response.json())
         .then( response => {
-          instance.setContent(`<h4>${response.post_title}</h4><span>${response.post_content}</span>`);
+          console.log(response)
+          const data = response.data
+          instance.setContent(`<h4>${data.post_title}</h4><span>${data.post_content}</span>`);
         })
         .catch((error) => {
+          console.log(error)
           instance._error = error;
           instance.setContent(`Request failed. ${error}`);
         })

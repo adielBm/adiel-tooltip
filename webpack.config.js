@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './src/index.js',
+  entry: ['./src/index.js', './src/index.ts'],
   mode: 'production',
   module: {
     rules: [
@@ -7,6 +7,10 @@ module.exports = {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
       },
+      {
+        test: /\.ts$/,
+        use: ["ts-loader"]
+      }
     ],
   },
 };

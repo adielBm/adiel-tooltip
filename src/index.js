@@ -2,6 +2,8 @@ import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css'; // optional for styling
 import 'tippy.js/animations/scale.css';
 
+import './style.css';
+
 document.querySelectorAll('.the-content a').forEach( el => {
 
   const href = el.href
@@ -10,6 +12,10 @@ document.querySelectorAll('.the-content a').forEach( el => {
 
   tippy(el, {
     arrow: true,
+    allowHTML: true,
+    interactive: true,
+    interactiveBorder: 20,
+    interactiveDebounce: 75,
     animation: 'scale',
     content: 'טוען...',
     onCreate(instance) {
@@ -36,9 +42,8 @@ document.querySelectorAll('.the-content a').forEach( el => {
       })
         .then( response => response.json())
         .then( response => {
-          console.log(response)
           const data = response.data
-          instance.setContent(`<h4>${data.post_title}</h4><span>${data.post_content}</span>`);
+          instance.setContent(`<h4>${data.post_title}</h4><div>${data.post_content}</div>`);
         })
         .catch((error) => {
           console.log(error)

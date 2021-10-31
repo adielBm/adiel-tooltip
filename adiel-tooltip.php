@@ -40,7 +40,7 @@ class Adiel_Tooltip {
 
     // Get Post Contect Using Post OBJECT:
     $post_content = strip_shortcodes(strip_tags(get_the_content(null, false, $post)));
-    $post_content = substr($post_content, 0, 600);
+    $post_content = wp_trim_words($post_content, 50, '...');
     $post_title = get_the_title($post);
     $post_parmalink = get_the_permalink($post);
     $post_img = get_the_post_thumbnail_url($post);

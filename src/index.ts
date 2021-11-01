@@ -1,1 +1,1 @@
-console.log('Hi, TypeScrtipt!')
+console.log('Hi, TypeScrtipt! bye!')

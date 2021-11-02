@@ -20,13 +20,8 @@ class Adiel_Tooltip {
   }
 
   public function enqueue_scripts() {
-
-    wp_register_script('adiel_tooltip', plugins_url('dist/main.js', __FILE__), array(), false, true);
-    wp_localize_script('adiel_tooltip', 'adiel_tooltip', array('ajaxurl' => admin_url('admin-ajax.php')));
-    wp_enqueue_script('adiel_tooltip');
-
+    wp_enqueue_script('adiel_tooltip', plugins_url('dist/main.js', __FILE__), array(), false, true);
   }
-
 
   public function ajax_handler() {
 
@@ -42,16 +37,15 @@ class Adiel_Tooltip {
     $post_content = strip_shortcodes(strip_tags(get_the_content(null, false, $post)));
     $post_content = wp_trim_words($post_content, 50, '...');
     $post_title = get_the_title($post);
-    $post_parmalink = get_the_permalink($post);
-    $post_img = get_the_post_thumbnail_url($post);
-
+/*     $post_parmalink = get_the_permalink($post);
+    $post_img = get_the_post_thumbnail_url($post); */
 
     // Ajax Response.
     $return = array(
       'post_content' => $post_content,
       'post_title' => $post_title,
-      'post_img' => $post_img,
-      'post_parmalink' => $post_parmalink
+/*       'post_img' => $post_img,
+      'post_parmalink' => $post_parmalink */
     );
 
     wp_send_json_success($return);

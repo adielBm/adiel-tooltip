@@ -25,7 +25,7 @@ anchors.forEach(anchor => {
       data.append('postUrl', href);
       data.append('action', 'adiel_tooltip');
 
-      fetch('/wordpress/wp-admin/admin-ajax.php', {
+      fetch('/wp-admin/admin-ajax.php', {
         method: 'POST',
         credentials: 'same-origin',
         body: data

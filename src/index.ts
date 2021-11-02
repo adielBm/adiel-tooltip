@@ -4,13 +4,15 @@ import 'tippy.js/animations/scale.css';
 
 import './style.css';
 
-document.querySelectorAll('.the-content a').forEach( el => {
+const anchors: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('.the-content a')
 
-  const href = el.href
+anchors.forEach(anchor => {
 
-  if ( href.includes('glossary') == false ) return;
+  const href = anchor.href
 
-  tippy(el, {
+  if (href.includes('glossary') == false) return;
+
+  tippy(anchor, {
     arrow: true,
     allowHTML: true,
     interactive: true,
@@ -18,48 +20,30 @@ document.querySelectorAll('.the-content a').forEach( el => {
     interactiveDebounce: 75,
     animation: 'scale',
     content: 'טוען...',
-    onCreate(instance) {
-      // Setup our own custom state properties
-      instance._isFetching = false;
-      instance._src = null;
-      instance._error = null;
-    },
     onShow(instance) {
-      if (instance._isFetching || instance._src || instance._error) {
-        return;
-      }
-
       const data = new FormData();
       data.append('postUrl', href);
       data.append('action', 'adiel_tooltip');
 
-      instance._isFetching = true;
-
-      fetch(adiel_tooltip.ajaxurl, {
+      fetch('/wordpress/wp-admin/admin-ajax.php', {
         method: 'POST',
         credentials: 'same-origin',
         body: data
       })
-        .then( response => response.json())
-        .then( response => {
+        .then(response => response.json())
+        .then(response => {
           const data = response.data
           instance.setContent(`<h4>${data.post_title}</h4><div>${data.post_content}</div>`);
         })
         .catch((error) => {
           console.log(error)
-          instance._error = error;
           instance.setContent(`Request failed. ${error}`);
         })
         .finally(() => {
-          instance._isFetching = false;
         });
     },
     onHidden(instance) {
       instance.setContent('טוען...');
-      // Unset these properties so new network requests can be initiated
-      instance._src = null;
-      instance._error = null;
     },
   });
 })
-

@@ -1,6 +1,6 @@
 module.exports = {
-  entry: ['./src/index.js', './src/index.ts'],
-  mode: 'production',
+  entry: ['./src/index.ts'],
+  mode: 'development',
   module: {
     rules: [
       {
@@ -12,6 +12,9 @@ module.exports = {
         use: ["ts-loader"]
       }
     ],
+  },  
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
   },
 };
 
